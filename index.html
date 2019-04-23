@@ -26,16 +26,17 @@
                     <h4 class="card-header dark centered">Current Train Schedule</h4>
                     <div class="card-body">
                         <!-- Table containing current schedule goes here -->
-                        <table class="table">
+                        <table class="table" id="train-table">
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col">Train Name</th>
                                 <th scope="col">Train Desination</th>
-                                <th scope="col">First Train Arrives</th>
                                 <th scope="col">Frequency</th>
+                                <th scope="col">Next Arrival</th>
+                                <th scope="col">Mins away</th>
                               </tr>
                             </thead>
-                            <tbody id="train-table">
+                            <tbody>
                              <!-- Rows will be dynamically added here.  -->
                             </tbody>
                           </table>

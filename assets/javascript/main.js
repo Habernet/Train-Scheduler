@@ -22,26 +22,25 @@ $("#add").on("click", function () {
   var frequency = $("#frequency-input").val().trim();
 
   // You will now push these to firebase
-  database.ref().push({
+  database.ref("trains/").push({
     name: name,
     destination: destination,
     firstTrain: firstTrain,
     frequency: frequency
-  })
+  });
 
   // Clear text boxes
   $("#name-input").val("");
   $("#destination-input").val("");
   $("#first-input").val("");
   $("#frequency-input").val("");
-
 })
 
 
 
 
 // Display that information back onto the page.
-database.ref().on("child_added", function (childsnapshot) {
+database.ref("trains/").on("child_added", function (childsnapshot) {
   // Take the snapshot and push the information onto the DOM.
   var snap = childsnapshot.val();
 
@@ -50,6 +49,11 @@ database.ref().on("child_added", function (childsnapshot) {
   var trainDestination = snap.destination;
   var trainFrequency = snap.frequency;
   var trainFirst = snap.firstTrain;
+  // var nextArrival = calculations;
+  // moment.js to find the next arrival
+  // var minsaway = calculations;
+  //Calculate mins away so it can be updated to the page as well
+
 
   //Create a table row. Create table data corresponding to the name, destination, first, and frequency.
   var row = $("<tr>").append(
@@ -57,10 +61,20 @@ database.ref().on("child_added", function (childsnapshot) {
     $("<td>").text(trainDestination),
     $("<td>").text(trainFirst),
     $("<td>").text(trainFrequency)
+    // $("<td>").text(minsAway)
   );
 
   //Append the row onto the train schedule div.
-  $("#train-table").append(row);
+  $("#train-table > tbody").append(row);
 
-  // WHY DOES THIS CREATE AN EMPTY ROW? WHEN YOU REFRESH IT GOES AWAY
-})
+}, function(errorObject) {
+  console.log("Errors handled: " + errorObject.code);
+});
+
+
+// WHY DOES THIS CREATE AN EMPTY ROW? WHEN YOU REFRESH IT GOES AWAY
+
+  // TO DO LIST
+  // 1. User input control for train frequency
+  // 2. Calculate minsAway and update it on the page...moment.js
+  // 3. 
