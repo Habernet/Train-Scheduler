@@ -48,20 +48,28 @@ database.ref("trains/").on("child_added", function (childsnapshot) {
   var trainName = snap.name;
   var trainDestination = snap.destination;
   var trainFrequency = snap.frequency;
-  var trainFirst = snap.firstTrain;
-  // var nextArrival = calculations;
-  // moment.js to find the next arrival
-  // var minsaway = calculations;
-  //Calculate mins away so it can be updated to the page as well
 
+  // Take off a year so that it happens in the past?
+  var firstTrainNewYear = moment(snap.firstTrain, "hh:mm").subtract(1, "years");
+
+  // Difference between now and  firstTrain
+  var timeDiff = moment().diff(moment(firstTrainNewYear), "minutes")
+  var remainderTime = timeDiff % snap.frequency;
+
+  // Calculate minutes until next train arrives
+  var minsUntilNext = snap.frequency - remainderTime;
+
+  // Calculate next train arrival based on the above
+  var nextArrival = moment().add(minsUntilNext, "minutes");
+  nextArrival = moment(nextArrival).format("hh:mm");
 
   //Create a table row. Create table data corresponding to the name, destination, first, and frequency.
   var row = $("<tr>").append(
     $("<td>").text(trainName),
     $("<td>").text(trainDestination),
-    $("<td>").text(trainFirst),
-    $("<td>").text(trainFrequency)
-    // $("<td>").text(minsAway)
+    $("<td>").text(trainFrequency),
+    $("<td>").text(nextArrival),
+    $("<td>").text(minsUntilNext)
   );
 
   //Append the row onto the train schedule div.
@@ -76,5 +84,4 @@ database.ref("trains/").on("child_added", function (childsnapshot) {
 
   // TO DO LIST
   // 1. User input control for train frequency
-  // 2. Calculate minsAway and update it on the page...moment.js
-  // 3. 
+  // 2. README!
