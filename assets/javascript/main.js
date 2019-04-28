@@ -13,7 +13,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 // Define on click event for the new train button.
-$("#add").on("click", function () {
+$("#add").on("click", () => {
   // grab data from the following forms
   // name destination first and frequency
   var name = $("#name-input").val().trim();
@@ -40,18 +40,19 @@ $("#add").on("click", function () {
 
 
 // Display that information back onto the page.
-database.ref("trains/").on("child_added", function (childsnapshot) {
+
+database.ref("trains/").on("child_added", (childsnapshot) => {
   // Take the snapshot and push the information onto the DOM.
   var snap = childsnapshot.val();
-
+  
   // Variables to store info from the child snapshot.
   var trainName = snap.name;
   var trainDestination = snap.destination;
   var trainFrequency = snap.frequency;
-
+  
   // Take off a year so that it happens in the past?
   var firstTrainNewYear = moment(snap.firstTrain, "hh:mm").subtract(1, "years");
-
+  
   // Difference between now and  firstTrain
   var timeDiff = moment().diff(moment(firstTrainNewYear), "minutes")
   var remainderTime = timeDiff % snap.frequency;
@@ -75,13 +76,10 @@ database.ref("trains/").on("child_added", function (childsnapshot) {
   //Append the row onto the train schedule div.
   $("#train-table > tbody").append(row);
 
-}, function(errorObject) {
+}, function (errorObject) {
   console.log("Errors handled: " + errorObject.code);
 });
 
-
-// WHY DOES THIS CREATE AN EMPTY ROW? WHEN YOU REFRESH IT GOES AWAY
-
   // TO DO LIST
   // 1. User input control for train frequency
-  // 2. README!
+  // 2. README! Needs work!
